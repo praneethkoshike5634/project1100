@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyAI - Personalized Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .progress-bar { transition: width 0.5s ease-in-out; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .file-drop-zone { border: 2px dashed #cbd5e0; transition: all 0.3s ease; }
+        .file-drop-zone:hover { border-color: #667eea; background-color: #f7fafc; }
+        .file-drop-zone.dragover { border-color: #667eea; background-color: #edf2f7; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold gradient-bg bg-clip-text text-transparent">StudyAI</h1>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-4">
+                            <button onclick="showSection('dashboard')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:text-indigo-600 transition-colors">Dashboard</button>
+                            <button onclick="showSection('documents')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-indigo-600 transition-colors">Documents</button>
+                            <button onclick="showSection('assessments')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-indigo-600 transition-colors">Assessments</button>
+                            <button onclick="showSection('analytics')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-indigo-600 transition-colors">Analytics</button>
+                            <button onclick="showSection('recommendations')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-indigo-600 transition-colors">AI Recommendations</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="relative">
+                        <img class="h-8 w-8 rounded-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23667eea'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome back, Alex! 👋</h2>
+                <p class="text-gray-600">Here's your learning progress overview</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 bg-blue-100 rounded-lg">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Documents</p>
+                            <p class="text-2xl font-semibold text-gray-900">24</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 bg-green-100 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Assessments</p>
+                            <p class="text-2xl font-semibold text-gray-900">12</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 bg-purple-100 rounded-lg">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Avg Score</p>
+                            <p class="text-2xl font-semibold text-gray-900">87%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 bg-orange-100 rounded-lg">
+                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Study Time</p>
+                            <p class="text-2xl font-semibold text-gray-900">42h</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Documents</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                            <div class="p-2 bg-blue-100 rounded-lg mr-3">
+                                <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900">Machine Learning Basics.pdf</p>
+                                <p class="text-xs text-gray-500">Uploaded 2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                            <div class="p-2 bg-green-100 rounded-lg mr-3">
+                                <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900">Data Structures Notes.docx</p>
+                                <p class="text-xs text-gray-500">Uploaded yesterday</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Study Progress</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Machine Learning</span>
+                                <span class="text-gray-900 font-medium">75%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full progress-bar" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Data Structures</span>
+                                <span class="text-gray-900 font-medium">92%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full progress-bar" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Algorithms</span>
+                                <span class="text-gray-900 font-medium">58%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-orange-600 h-2 rounded-full progress-bar" style="width: 58%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documents Section -->
+        <div id="documents" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Document Processing</h2>
+                <p class="text-gray-600">Upload and manage your study materials</p>
+            </div>
+
+            <!-- File Upload Area -->
+            <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+                <div class="file-drop-zone rounded-lg p-8 text-center" id="dropZone">
+                    <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Upload Documents</h3>
+                    <p class="text-gray-500 mb-4">Drag and drop files here, or click to browse</p>
+                    <input type="file" id="fileInput" class="hidden" multiple accept=".pdf,.doc,.docx,.txt,.ppt,.pptx">
+                    <button onclick="document.getElementById('fileInput').click()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Choose Files
+                    </button>
+                    <p class="text-xs text-gray-400 mt-2">Supports PDF, DOC, DOCX, TXT, PPT, PPTX</p>
+                </div>
+            </div>
+
+            <!-- Document List -->
+            <div class="bg-white rounded-xl shadow-sm">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Your Documents</h3>
+                </div>
+                <div class="divide-y divide-gray-200" id="documentList">
+                    <div class="px-6 py-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-red-100 rounded-lg mr-4">
+                                <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900">Machine Learning Fundamentals.pdf</h4>
+                                <p class="text-sm text-gray-500">2.4 MB • Uploaded 2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Processed</span>
+                            <button onclick="generateAssessment('Machine Learning Fundamentals.pdf')" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Generate Quiz</button>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-blue-100 rounded-lg mr-4">
+                                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900">Data Structures and Algorithms.docx</h4>
+                                <p class="text-sm text-gray-500">1.8 MB • Uploaded yesterday</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Processed</span>
+                            <button onclick="generateAssessment('Data Structures and Algorithms.docx')" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Generate Quiz</button>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessments Section -->
+        <div id="assessments" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">AI-Generated Assessments</h2>
+                <p class="text-gray-600">Take quizzes automatically generated from your documents</p>
+            </div>
+
+            <!-- Assessment Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Machine Learning Quiz</h3>
+                        <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">New</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">10 questions • Estimated 15 minutes</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Based on: ML Fundamentals.pdf</span>
+                        <button onclick="startAssessment('Machine Learning Quiz')" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+                            Start Quiz
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Data Structures Test</h3>
+                        <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completed</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">15 questions • Score: 92%</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Completed 2 days ago</span>
+                        <button onclick="reviewAssessment('Data Structures Test')" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm">
+                            Review
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Algorithms Practice</h3>
+                        <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">In Progress</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">12 questions • 7/12 completed</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Started yesterday</span>
+                        <button onclick="continueAssessment('Algorithms Practice')" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors text-sm">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Interface (Hidden by default) -->
+            <div id="quizInterface" class="bg-white rounded-xl shadow-sm p-8 hidden">
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900" id="quizTitle">Machine Learning Quiz</h3>
+                        <span class="text-sm text-gray-500" id="questionCounter">Question 1 of 10</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-indigo-600 h-2 rounded-full progress-bar" id="quizProgress" style="width: 10%"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4" id="questionText">What is the primary goal of supervised learning?</h4>
+                    <div class="space-y-3" id="answerOptions">
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="answer" value="a" class="mr-3">
+                            <span>To find patterns in unlabeled data</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="answer" value="b" class="mr-3">
+                            <span>To learn from labeled training data to make predictions</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="answer" value="c" class="mr-3">
+                            <span>To reduce the dimensionality of data</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="answer" value="d" class="mr-3">
+                            <span>To cluster similar data points together</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between">
+                    <button onclick="previousQuestion()" class="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors" id="prevBtn" disabled>
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors" id="nextBtn">
+                        Next Question
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analytics" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Progress Analytics</h2>
+                <p class="text-gray-600">Track your learning journey with detailed insights</p>
+            </div>
+
+            <!-- Analytics Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Performance Over Time</h3>
+                    <canvas id="performanceChart" width="400" height="200"></canvas>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Subject Distribution</h3>
+                    <canvas id="subjectChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Detailed Stats -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Study Streaks</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Current Streak</span>
+                            <span class="text-2xl font-bold text-green-600">7 days</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Longest Streak</span>
+                            <span class="text-lg font-semibold text-gray-900">23 days</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">This Week</span>
+                            <span class="text-lg font-semibold text-gray-900">5/7 days</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Weak Areas</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                            <span class="text-sm font-medium text-red-800">Neural Networks</span>
+                            <span class="text-sm text-red-600">62%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                            <span class="text-sm font-medium text-yellow-800">Graph Algorithms</span>
+                            <span class="text-sm text-yellow-600">71%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+                            <span class="text-sm font-medium text-orange-800">Dynamic Programming</span>
+                            <span class="text-sm text-orange-600">78%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Strong Areas</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <span class="text-sm font-medium text-green-800">Data Structures</span>
+                            <span class="text-sm text-green-600">94%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <span class="text-sm font-medium text-green-800">Sorting Algorithms</span>
+                            <span class="text-sm text-green-600">91%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <span class="text-sm font-medium text-green-800">Linear Regression</span>
+                            <span class="text-sm text-green-600">89%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div id="recommendations" class="section hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">AI Study Recommendations</h2>
+                <p class="text-gray-600">Personalized suggestions to improve your learning</p>
+            </div>
+
+            <!-- Recommendation Cards -->
+            <div class="space-y-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                    <div class="flex items-start">
+                        <div class="p-2 bg-blue-100 rounded-lg mr-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Focus on Neural Networks</h3>
+                            <p class="text-gray-700 mb-4">Your recent quiz scores show you're struggling with neural network concepts. I recommend spending extra time on backpropagation and activation functions.</p>
+                            <div class="flex items-center space-x-4">
+                                <button onclick="acceptRecommendation('neural-networks')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                                    Create Study Plan
+                                </button>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Resources</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                    <div class="flex items-start">
+                        <div class="p-2 bg-green-100 rounded-lg mr-4">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Optimal Study Time</h3>
+                            <p class="text-gray-700 mb-4">Based on your performance data, you learn best between 2-4 PM. Consider scheduling your most challenging topics during this time window.</p>
+                            <div class="flex items-center space-x-4">
+                                <button onclick="acceptRecommendation('study-time')" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
+                                    Set Reminder
+                                </button>
+                                <button class="text-green-600 hover:text-green-800 text-sm font-medium">View Analysis</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-200">
+                    <div class="flex items-start">
+                        <div class="p-2 bg-purple-100 rounded-lg mr-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Practice More Algorithms</h3>
+                            <p class="text-gray-700 mb-4">You're doing great with data structures! Now it's time to challenge yourself with more complex algorithmic problems to build on your strong foundation.</p>
+                            <div class="flex items-center space-x-4">
+                                <button onclick="acceptRecommendation('algorithms')" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm">
+                                    Generate Practice Set
+                                </button>
+                                <button class="text-purple-600 hover:text-purple-800 text-sm font-medium">Browse Problems</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border border-orange-200">
+                    <div class="flex items-start">
+                        <div class="p-2 bg-orange-100 rounded-lg mr-4">
+                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Join Study Groups</h3>
+                            <p class="text-gray-700 mb-4">Students who study similar topics are forming groups. Collaborative learning could help reinforce your understanding of machine learning concepts.</p>
+                            <div class="flex items-center space-x-4">
+                                <button onclick="acceptRecommendation('study-groups')" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors text-sm">
+                                    Find Groups
+                                </button>
+                                <button class="text-orange-600 hover:text-orange-800 text-sm font-medium">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Global variables
+        let currentSection = 'dashboard';
+        let currentQuestion = 1;
+        let totalQuestions = 10;
+        let quizData = {};
+
+        // Navigation
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            
+            // Show selected section
+            document.getElementById(section).classList.remove('hidden');
+            document.getElementById(section).classList.add('fade-in');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-gray-900');
+                btn.classList.add('text-gray-500');
+            });
+            event.target.classList.remove('text-gray-500');
+            event.target.classList.add('text-gray-900');
+            
+            currentSection = section;
+            
+            // Initialize charts if analytics section
+            if (section === 'analytics') {
+                setTimeout(initializeCharts, 100);
+            }
+        }
+
+        // File upload functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                // Simulate file processing
+                addDocumentToList(file);
+                showNotification(`Processing ${file.name}...`, 'info');
+                
+                setTimeout(() => {
+                    showNotification(`${file.name} processed successfully!`, 'success');
+                }, 2000);
+            });
+        }
+
+        function addDocumentToList(file) {
+            const documentList = document.getElementById('documentList');
+            const fileSize = (file.size / (1024 * 1024)).toFixed(1);
+            const fileIcon = getFileIcon(file.type);
+            
+            const documentItem = document.createElement('div');
+            documentItem.className = 'px-6 py-4 flex items-center justify-between';
+            documentItem.innerHTML = `
+                <div class="flex items-center">
+                    <div class="p-2 ${fileIcon.bg} rounded-lg mr-4">
+                        <svg class="w-6 h-6 ${fileIcon.color}" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-900">${file.name}</h4>
+                        <p class="text-sm text-gray-500">${fileSize} MB • Processing...</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Processing</span>
+                    <button onclick="generateAssessment('${file.name}')" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Generate Quiz</button>
+                </div>
+            `;
+            
+            documentList.appendChild(documentItem);
+            
+            // Update status after processing
+            setTimeout(() => {
+                const statusSpan = documentItem.querySelector('.bg-yellow-100');
+                const timeSpan = documentItem.querySelector('.text-gray-500');
+                statusSpan.className = 'px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full';
+                statusSpan.textContent = 'Processed';
+                timeSpan.textContent = `${fileSize} MB • Just now`;
+            }, 2000);
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.includes('pdf')) {
+                return { bg: 'bg-red-100', color: 'text-red-600' };
+            } else if (fileType.includes('word') || fileType.includes('document')) {
+                return { bg: 'bg-blue-100', color: 'text-blue-600' };
+            } else if (fileType.includes('presentation')) {
+                return { bg: 'bg-orange-100', color: 'text-orange-600' };
+            } else {
+                return { bg: 'bg-gray-100', color: 'text-gray-600' };
+            }
+        }
+
+        // Assessment functions
+        function generateAssessment(filename) {
+            showNotification(`Generating assessment from ${filename}...`, 'info');
+            
+            setTimeout(() => {
+                showNotification('Assessment generated successfully!', 'success');
+                showSection('assessments');
+            }, 1500);
+        }
+
+        function startAssessment(assessmentName) {
+            document.getElementById('quizInterface').classList.remove('hidden');
+            document.getElementById('quizTitle').textContent = assessmentName;
+            currentQuestion = 1;
+            updateQuizProgress();
+            showNotification('Assessment started! Good luck!', 'success');
+        }
+
+        function continueAssessment(assessmentName) {
+            startAssessment(assessmentName);
+            currentQuestion = 7; // Resume from question 7
+            updateQuizProgress();
+        }
+
+        function reviewAssessment(assessmentName) {
+            showNotification(`Opening review for ${assessmentName}`, 'info');
+        }
+
+        function nextQuestion() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (!selectedAnswer) {
+                showNotification('Please select an answer before continuing.', 'warning');
+                return;
+            }
+            
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                updateQuizProgress();
+                loadNextQuestion();
+            } else {
+                completeAssessment();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                updateQuizProgress();
+                loadPreviousQuestion();
+            }
+        }
+
+        function updateQuizProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('quizProgress').style.width = progress + '%';
+            document.getElementById('questionCounter').textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? 'Finish Quiz' : 'Next Question';
+        }
+
+        function loadNextQuestion() {
+            // Clear previous selection
+            document.querySelectorAll('input[name="answer"]').forEach(input => input.checked = false);
+            
+            // Sample questions (in a real app, these would come from the backend)
+            const questions = [
+                {
+                    text: "What is the primary goal of supervised learning?",
+                    options: [
+                        "To find patterns in unlabeled data",
+                        "To learn from labeled training data to make predictions",
+                        "To reduce the dimensionality of data",
+                        "To cluster similar data points together"
+                    ]
+                },
+                {
+                    text: "Which algorithm is commonly used for classification tasks?",
+                    options: [
+                        "K-means clustering",
+                        "Principal Component Analysis",
+                        "Random Forest",
+                        "DBSCAN"
+                    ]
+                }
+            ];
+            
+            const questionIndex = (currentQuestion - 1) % questions.length;
+            const question = questions[questionIndex];
+            
+            document.getElementById('questionText').textContent = question.text;
+            const optionLabels = document.querySelectorAll('#answerOptions label span');
+            question.options.forEach((option, index) => {
+                if (optionLabels[index]) {
+                    optionLabels[index].textContent = option;
+                }
+            });
+        }
+
+        function loadPreviousQuestion() {
+            loadNextQuestion(); // For demo purposes, just load the same question structure
+        }
+
+        function completeAssessment() {
+            document.getElementById('quizInterface').classList.add('hidden');
+            showNotification('Assessment completed! Your score: 87%', 'success');
+            
+            // Update stats (in a real app, this would be sent to backend)
+            setTimeout(() => {
+                showNotification('Results saved to your analytics dashboard.', 'info');
+            }, 1000);
+        }
+
+        // Recommendation functions
+        function acceptRecommendation(type) {
+            const messages = {
+                'neural-networks': 'Created personalized study plan for Neural Networks!',
+                'study-time': 'Study reminder set for 2-4 PM daily!',
+                'algorithms': 'Generated 20 algorithm practice problems!',
+                'study-groups': 'Found 3 study groups in your area!'
+            };
+            
+            showNotification(messages[type], 'success');
+        }
+
+        // Analytics charts
+        function initializeCharts() {
+            // Performance chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                    datasets: [{
+                        label: 'Average Score (%)',
+                        data: [65, 72, 78, 85, 82, 87],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Subject distribution chart
+            const subjectCtx = document.getElementById('subjectChart').getContext('2d');
+            new Chart(subjectCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Machine Learning', 'Data Structures', 'Algorithms', 'Statistics'],
+                    datasets: [{
+                        data: [35, 25, 25, 15],
+                        backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'bg-green-100 border-green-400 text-green-700',
+                error: 'bg-red-100 border-red-400 text-red-700',
+                warning: 'bg-yellow-100 border-yellow-400 text-yellow-700',
+                info: 'bg-blue-100 border-blue-400 text-blue-700'
+            };
+            
+            notification.className = `fixed top-4 right-4 p-4 border-l-4 rounded-lg shadow-lg z-50 ${colors[type]} fade-in`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-lg font-semibold">&times;</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            showNotification('Welcome to StudyAI! Upload your documents to get started.', 'success');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97e5e0cbd0319f50',t:'MTc1Nzc0Nzk4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
